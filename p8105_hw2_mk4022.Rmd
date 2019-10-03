@@ -1,0 +1,14 @@
+---
+title: "p8105_hw2_mk4022"
+author: "Mary Knoop"
+date: "10/2/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#P8105 hw2
+
+library(tidyverse)
