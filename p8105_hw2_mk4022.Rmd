@@ -33,4 +33,35 @@ trash_wheel =
 ```
 
 
+Part B:
+Read and clean precipitation data for 2017 and 2018. For each, omit rows without precipitation data and add a variable year.
+
+```{r}
+precipitation_17 = 
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = 6, skip = 1) %>% 
+  janitor::clean_names() %>% 
+  drop_na() %>% 
+  mutate(year = 2017) %>% 
+  select(year, month, total)
+
+precipitation_18 = 
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = 5, skip = 1) %>% 
+  janitor::clean_names() %>% 
+  drop_na() %>% 
+  mutate(year = 2018) %>% 
+  select(year, month, total)
+```
+
+Part C:
+Next, combine precipitation datasets and convert month to a character variable (the variable month.name is built into R and should be useful).
+```{r}
+precipitation_all = 
+  full_join(precipitation_17, precipitation_18) %>% 
+  mutate(month = month.name[month])
+```
+
+Part D: 
+Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
+
+The trash_wheel dataset has `r nrow(trash_wheel)` observations, and the precipitation_all data set has `r nrow(precipitation_all)` observations. Key variables in the dataset trash_wheel include `glass_bottles` and `grocery_bags`. Key variables in the dataset precipitation_all includes `year`, `month`, and `total`. The total precipitation in 2018 was `r sum(pull(precipitation_18, total))` inches. The median number of `sports_balls` in the dumpster in 2017 was `r median(pull(filter(trash_wheel, year==2017), sports_balls))`.
 
