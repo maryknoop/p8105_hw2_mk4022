@@ -9,6 +9,9 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#P8105 hw2
-
+#Load libraries for analyses 
+```{r}
 library(tidyverse)
+library(readxl)
+library(knitr)
+```
