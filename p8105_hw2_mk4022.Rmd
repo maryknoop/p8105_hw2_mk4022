@@ -9,9 +9,28 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Load libraries for analyses 
+Load libraries for analyses 
 ```{r}
 library(tidyverse)
 library(readxl)
 library(knitr)
 ```
+
+Problem 1:
+Part A
+* specify the sheet in the Excel file and to omit non-data entries (rows with notes / figures; columns containing notes) using arguments in read_excel
+* use reasonable variable names
+* omit rows that do not include dumpster-specific data
+* round the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
+
+```{r}
+trash_wheel = 
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = 1, skip = 1) %>% 
+  janitor::clean_names() %>% 
+  drop_na(dumpster)%>% 
+  select(-x15, -x16, -x17) %>% 
+  mutate(sports_balls = as.integer(sports_balls))
+```
+
+
+
