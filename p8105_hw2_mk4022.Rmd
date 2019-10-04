@@ -177,26 +177,27 @@ baby_names
 Part B:
 Produce a well-structured, reader-friendly table showing the rank in popularity of the name “Olivia” as a female baby name over time; this should have rows for ethnicities and columns for year.
 ```{r}
-#olivia
-olivia =
-  baby_names %>%  
-  filter(childs_first_name == "olivia") %>% 
-  select (-gender, -childs_first_name, -count) %>% 
-  pivot_wider(
-    names_from = "year_of_birth",
-    values_from = "rank") %>% 
-  knitr::kable()
-
-#view dataset for correctness
-olivia
+baby_names %>%
+  filter(childs_first_name == "olivia") %>%
+  select(-count) %>%
+  pivot_wider(names_from = year_of_birth, values_from = rank)
 ```
 
 
-
-
-
-
-Part C:
+Part C: 
 Produce a similar table showing the most popular name among male children over time.
+```{r}
+baby_names %>%
+  filter(gender == "male", rank == 1) %>%
+  select(-count) %>%
+  pivot_wider(names_from = year_of_birth, values_from = rank)
+```
 
+Part D:
+Finally, for male, white non-hispanic children born in 2016, produce a scatter plot showing the number of children with a name (y axis) against the rank in popularity of that name (x axis).
+```{r}
+baby_names_scatterplot=
+  filter(baby_names, gender == "male", ethnicity == "white non hispanic", year_of_birth == 2016) 
+ggplot(baby_names_scatterplot, aes(x= rank, y= count)) + geom_point()
+```
 
