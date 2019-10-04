@@ -16,8 +16,8 @@ library(readxl)
 library(knitr)
 ```
 
-Problem 1:
-Part A
+Problem 1
+Part A:
 * specify the sheet in the Excel file and to omit non-data entries (rows with notes / figures; columns containing notes) using arguments in read_excel
 * use reasonable variable names
 * omit rows that do not include dumpster-specific data
@@ -30,6 +30,9 @@ trash_wheel =
   drop_na(dumpster)%>% 
   select(-x15, -x16, -x17) %>% 
   mutate(sports_balls = as.integer(sports_balls))
+
+#view datasets for correctness 
+trash_wheel
 ```
 
 
@@ -50,6 +53,10 @@ precipitation_18 =
   drop_na() %>% 
   mutate(year = 2018) %>% 
   select(year, month, total)
+
+#view datasets for correctness 
+precipitation_17
+precipitation_18
 ```
 
 Part C:
@@ -58,10 +65,35 @@ Next, combine precipitation datasets and convert month to a character variable (
 precipitation_all = 
   full_join(precipitation_17, precipitation_18) %>% 
   mutate(month = month.name[month])
+
+#view datasets for correctness 
+precipitation_all
 ```
 
 Part D: 
 Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
 
 The trash_wheel dataset has `r nrow(trash_wheel)` observations, and the precipitation_all data set has `r nrow(precipitation_all)` observations. Key variables in the dataset trash_wheel include `glass_bottles` and `grocery_bags`. Key variables in the dataset precipitation_all includes `year`, `month`, and `total`. The total precipitation in 2018 was `r sum(pull(precipitation_18, total))` inches. The median number of `sports_balls` in the dumpster in 2017 was `r median(pull(filter(trash_wheel, year==2017), sports_balls))`.
+
+Problem 2
+Part A: 
+First, clean the data in pols-month.csv. Use separate() to break up the variable mon into integer variables year, month, and day; replace month number with month name; create a president variable taking values gop and dem, and remove prez_dem and prez_gop; and remove the day variable.
+
+```{r}
+pols =
+  read_csv("./data/pols-month.csv") %>%
+  janitor::clean_names() %>% 
+  separate(mon, c("year", "month", "day")) %>%
+    mutate(
+    year = as.numeric(year),
+    month = as.numeric(month),
+    month = month.name[month]
+    ) %>%
+  mutate(president = ifelse(prez_gop == 1, "gop", "dem")) %>% 
+  mutate(year = as.numeric(year)) %>% 
+  select (-prez_gop, -prez_dem, -day)
+
+#view datasets for correctness 
+pols
+```
 
